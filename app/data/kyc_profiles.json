@@ -1,0 +1,122 @@
+[
+  {
+    "customer_id": "CUST001",
+    "name": "Jessica Holmes",
+    "nationality": "IN",
+    "account_age_days": 1941,
+    "device_id": "584e0120-6350-485e-a548-bed4dd99a619",
+    "last_known_device": "584e0120-6350-485e-a548-bed4dd99a619",
+    "has_device_mismatch": false,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST002",
+    "name": "Danny Morgan",
+    "nationality": "AE",
+    "account_age_days": 1470,
+    "device_id": "61f0f99e-277e-4057-ae59-4942ddfaa189",
+    "last_known_device": "3c3d4a2d-5d94-4fc1-b5c8-716e5839e6e0",
+    "has_device_mismatch": true,
+    "risk_tier": "HIGH",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST003",
+    "name": "Crystal Robinson",
+    "nationality": "IN",
+    "account_age_days": 5,
+    "device_id": "39424a06-f90a-4966-826d-7c30b857a7a9",
+    "last_known_device": "39424a06-f90a-4966-826d-7c30b857a7a9",
+    "has_device_mismatch": false,
+    "risk_tier": "HIGH",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST004",
+    "name": "Mark Perez",
+    "nationality": "GB",
+    "account_age_days": 1499,
+    "device_id": "5c657a89-1765-45ec-bb0a-999c41e70c63",
+    "last_known_device": "51ed667f-3f0c-4ded-9858-fb19502047c7",
+    "has_device_mismatch": true,
+    "risk_tier": "LOW",
+    "email_verified": false,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST005",
+    "name": "Shannon Jones",
+    "nationality": "US",
+    "account_age_days": 219,
+    "device_id": "a015d76e-8bf9-4366-ad86-49689e83c3c4",
+    "last_known_device": "a015d76e-8bf9-4366-ad86-49689e83c3c4",
+    "has_device_mismatch": false,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST006",
+    "name": "Michael Lewis",
+    "nationality": "LB",
+    "account_age_days": 566,
+    "device_id": "dc7d0d53-ef58-4eec-967e-20634e706abc",
+    "last_known_device": "dc7d0d53-ef58-4eec-967e-20634e706abc",
+    "has_device_mismatch": false,
+    "risk_tier": "HIGH",
+    "email_verified": false,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST007",
+    "name": "Timothy Duncan",
+    "nationality": "AE",
+    "account_age_days": 1881,
+    "device_id": "7606e539-cdac-43dc-ad49-344fc13309c4",
+    "last_known_device": "8b55c737-21bc-4e71-8699-94f4dd92af22",
+    "has_device_mismatch": true,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": false
+  },
+  {
+    "customer_id": "CUST008",
+    "name": "Richard Aguirre",
+    "nationality": "EG",
+    "account_age_days": 10,
+    "device_id": "a4ee28c8-9357-4b55-94ef-ba4061a9a7c8",
+    "last_known_device": "8f958215-429f-4420-8107-862c625f1eca",
+    "has_device_mismatch": true,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST009",
+    "name": "Brent Jordan",
+    "nationality": "PK",
+    "account_age_days": 1840,
+    "device_id": "2532eb37-f8cd-4a82-a077-3be8448cbceb",
+    "last_known_device": "2532eb37-f8cd-4a82-a077-3be8448cbceb",
+    "has_device_mismatch": false,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": true
+  },
+  {
+    "customer_id": "CUST010",
+    "name": "John Daniel",
+    "nationality": "PH",
+    "account_age_days": 397,
+    "device_id": "48c6e11f-8167-4a57-9c5a-5a0643df9774",
+    "last_known_device": "48c6e11f-8167-4a57-9c5a-5a0643df9774",
+    "has_device_mismatch": false,
+    "risk_tier": "LOW",
+    "email_verified": true,
+    "phone_verified": true
+  }
+]

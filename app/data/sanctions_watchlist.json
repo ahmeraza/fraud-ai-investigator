@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Shell Holdings International Ltd",
+    "aliases": [
+      "Shell Holdings Intl",
+      "SHI Ltd"
+    ],
+    "country": "IR",
+    "reason": "OFAC SDN \u2014 sanctions evasion",
+    "date_listed": "2022-03-15"
+  },
+  {
+    "name": "Eastern Star Trading Corp",
+    "aliases": [
+      "East Star Trading",
+      "ESTC"
+    ],
+    "country": "KP",
+    "reason": "UN Security Council \u2014 weapons proliferation",
+    "date_listed": "2021-08-10"
+  },
+  {
+    "name": "Gulf Resources FZE",
+    "aliases": [
+      "Gulf Resources Free Zone",
+      "GR-FZE"
+    ],
+    "country": "SY",
+    "reason": "EU Council \u2014 conflict financing",
+    "date_listed": "2023-01-22"
+  },
+  {
+    "name": "Mohamed Al Rashid Trading",
+    "aliases": [
+      "Mohammed Al Rashid Trading",
+      "Muhammad Al Rashid Trading",
+      "M. Rashid Trading LLC"
+    ],
+    "country": "YE",
+    "reason": "OFAC \u2014 terrorism financing",
+    "date_listed": "2023-06-05"
+  },
+  {
+    "name": "Horizon Capital Group",
+    "aliases": [
+      "Horizon Capital",
+      "HCG Holdings"
+    ],
+    "country": "MM",
+    "reason": "EU \u2014 military financing",
+    "date_listed": "2022-11-30"
+  }
+]
