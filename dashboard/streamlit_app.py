@@ -3,8 +3,8 @@ dashboard/streamlit_app.py
 ───────────────────────────
 Fraud AI Investigator — Streamlit Dashboard
 
-Week 1: Placeholder showing system status and raw dataset preview.
-Full investigation workflow added in Week 6.
+Phase 1: Placeholder showing system status and raw dataset preview.
+Full investigation workflow added in Phase 6.
 
 Run with:
     uv run streamlit run dashboard/streamlit_app.py
@@ -28,7 +28,7 @@ st.set_page_config(
 
 with st.sidebar:
     st.markdown("### 🔍 Fraud AI Investigator")
-    st.markdown("**v0.1.0** — Week 1 Setup")
+    st.markdown("**v0.1.0** — Phase 2 Complete")
     st.divider()
     st.markdown("**Navigation**")
     page = st.radio(
@@ -78,7 +78,7 @@ def load_sanctions():
 
 if page == "System Status":
     st.title("System Status")
-    st.caption("Week 1 — Environment setup complete")
+    st.caption("Phase 2 complete — alert engine and REST API live")
 
     transactions = load_transactions()
     profiles = load_kyc_profiles()
@@ -100,22 +100,16 @@ if page == "System Status":
 
     st.divider()
 
-    st.subheader("Component checklist")
+    st.subheader("Build progress")
 
     checks = {
-        "✅ GitHub repo created": True,
-        "✅ Python environment (uv)": True,
-        "✅ Project folder structure": True,
-        "✅ Pydantic data models": True,
-        "✅ FastAPI health endpoint": True,
-        "✅ Synthetic UAE dataset": data_ready,
-        "✅ pytest test suite": True,
-        "⏳ Alert engine (Week 2)": False,
-        "⏳ Triage agent (Week 3–4)": False,
-        "⏳ LangGraph multi-agent (Week 5–7)": False,
-        "⏳ HITL review (Week 8–9)": False,
-        "⏳ Full dashboard (Week 10–11)": False,
-        "⏳ Hugging Face deployment (Week 12)": False,
+        "✅ Phase 1 — Environment, models, synthetic dataset": True,
+        "✅ Phase 2 — Alert engine, REST API, audit trail": True,
+        "⏳ Phase 3 — LLM triage agent (Gemini)": False,
+        "⏳ Phase 4 — LangGraph multi-agent investigation": False,
+        "⏳ Phase 5 — HITL review + fraud memory": False,
+        "⏳ Phase 6 — Full Streamlit dashboard": False,
+        "⏳ Phase 7 — Hugging Face Spaces deployment": False,
     }
 
     done = sum(1 for v in checks.values() if v)
@@ -210,4 +204,15 @@ elif page == "About":
 
     ### Cost
     **$0/month** — all free tier APIs and hosting.
+
+    ### Build phases
+    | Phase | Description |
+    |---|---|
+    | Phase 1 | Environment, data models, synthetic dataset |
+    | Phase 2 | Alert engine, REST API, audit trail |
+    | Phase 3 | LLM triage agent |
+    | Phase 4 | LangGraph multi-agent investigation |
+    | Phase 5 | HITL review + fraud memory |
+    | Phase 6 | Full Streamlit dashboard |
+    | Phase 7 | Hugging Face Spaces live deployment |
     """)
