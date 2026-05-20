@@ -143,13 +143,13 @@ fraud-ai-investigator/
 
 | Phase | Description | Status |
 |---|---|---|
-| Week 1 | Repo setup, Python env, folder structure, synthetic dataset | ✅ Complete |
-| Week 2 | Pydantic models, alert engine rules, FastAPI endpoints | 🔄 In progress |
-| Week 3–4 | Triage service + LLM narrative generation | ⏳ Planned |
-| Week 5–7 | LangGraph multi-agent investigation | ⏳ Planned |
-| Week 8–9 | HITL review + fraud memory + audit trail | ⏳ Planned |
-| Week 10–11 | Streamlit dashboard + Docker packaging | ⏳ Planned |
-| Week 12 | Deploy to Hugging Face Spaces (live demo) | ⏳ Planned |
+| Phase 1 | Repo setup, Python env, folder structure, synthetic dataset | ✅ Complete |
+| Phase 2 | Pydantic models, alert engine rules, FastAPI endpoints | ✅ Complete |
+| Phase 3 | Triage service + LLM narrative generation | 🔄 In progress |
+| Phase 4 | LangGraph multi-agent investigation | ⏳ Planned |
+| Phase 5 | HITL review + fraud memory + audit trail | ⏳ Planned |
+| Phase 6 | Streamlit dashboard + Docker packaging | ⏳ Planned |
+| Phase 7 | Deploy to Hugging Face Spaces (live demo) | ⏳ Planned |
 
 ---
 

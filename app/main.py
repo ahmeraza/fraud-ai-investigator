@@ -1,7 +1,11 @@
 """
 app/main.py
 ────────────
-FastAPI application entry point.
+FastAPI application entry point — updated for Week 2.
+
+Changes from Week 1:
+  - Alerts router registered at /v1/alerts
+  - Startup log now shows alert store stats
 
 Run with:
     uv run uvicorn app.main:app --reload
@@ -18,14 +22,11 @@ from app.core.config import get_settings
 from app.core.logging import get_logger, setup_logging
 from app.shared.models import HealthResponse
 
-# ── Startup / shutdown lifecycle ─────────────────────────────────────────────
-
 logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Actions to run on startup and shutdown."""
     setup_logging()
     settings = get_settings()
     logger.info(f"Starting Fraud AI Investigator v{settings.app_version}")
@@ -33,10 +34,8 @@ async def lifespan(app: FastAPI):
     logger.info(f"Gemini key present: {settings.has_gemini_key}")
     logger.info(f"Groq key present: {settings.has_groq_key}")
     yield
-    logger.info("Shutting down Fraud AI Investigator")
+    logger.info("Shutting down")
 
-
-# ── Application factory ──────────────────────────────────────────────────────
 
 def create_app() -> FastAPI:
     settings = get_settings()
@@ -54,7 +53,6 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
     )
 
-    # ── CORS (allow all in development) ─────────────────────────────────────
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"] if settings.is_development else ["http://localhost:8501"],
@@ -63,10 +61,9 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # ── Register routers ─────────────────────────────────────────────────────
-    # (routers added in later weeks as each phase is built)
-    # from app.api.alerts import router as alerts_router
-    # app.include_router(alerts_router, prefix="/v1/alerts", tags=["Alerts"])
+    # ── Routers ───────────────────────────────────────────────────────────────
+    from app.api.alerts import router as alerts_router
+    app.include_router(alerts_router, prefix="/v1/alerts", tags=["Alerts"])
 
     return app
 
@@ -74,28 +71,13 @@ def create_app() -> FastAPI:
 app = create_app()
 
 
-# ── Root endpoints ────────────────────────────────────────────────────────────
-
 @app.get("/", include_in_schema=False)
 def root():
-    return {
-        "service": "Fraud AI Investigator",
-        "docs": "/docs",
-        "health": "/health",
-    }
+    return {"service": "Fraud AI Investigator", "docs": "/docs", "health": "/health"}
 
 
-@app.get(
-    "/health",
-    response_model=HealthResponse,
-    summary="Health check",
-    tags=["System"],
-)
+@app.get("/health", response_model=HealthResponse, tags=["System"])
 def health() -> HealthResponse:
-    """
-    Returns the current health status of the API.
-    Also indicates which LLM providers are configured.
-    """
     settings = get_settings()
     return HealthResponse(
         status="ok",
