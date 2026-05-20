@@ -1,0 +1,30 @@
+# .gitattributes
+# Controls how GitHub Linguist detects the primary language of this repository.
+# Without this, large .ipynb files push "Jupyter Notebook" above Python in byte count.
+
+# ── Exclude notebooks from language statistics ────────────────────────────────
+# linguist-vendored tells GitHub to ignore these files when calculating language %.
+# The notebooks still exist and are fully browsable on GitHub — this only affects
+# the language badge shown on the repo homepage.
+notebooks/*.ipynb linguist-vendored
+
+# ── Normalise line endings across platforms ───────────────────────────────────
+# Ensures consistent line endings whether contributors use Mac, Linux, or Windows.
+* text=auto
+
+# ── Python files — always LF line endings ────────────────────────────────────
+*.py text eol=lf
+
+# ── Config and data files ─────────────────────────────────────────────────────
+*.toml   text eol=lf
+*.yaml   text eol=lf
+*.yml    text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.env    text eol=lf
+
+# ── Binary files — no line ending conversion ──────────────────────────────────
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.ico    binary
