@@ -1,0 +1,12 @@
+{
+  "source": "IEEE-CIS Fraud Detection \u2014 Kaggle 2019",
+  "source_url": "https://www.kaggle.com/competitions/ieee-fraud-detection",
+  "processed_at": "2026-05-21T13:11:47.915782+00:00",
+  "sample_size": 2000,
+  "sample_seed": 42,
+  "fraud_count": 69,
+  "non_fraud_count": 1931,
+  "fraud_rate": 0.0345,
+  "usd_to_aed_rate": 3.674,
+  "full_dataset_size": 590540
+}
