@@ -1,9 +1,6 @@
 """
-app/main.py
-────────────
-FastAPI application entry point — updated for crypto monitoring.
-
-New in this version: crypto router registered at /v1/crypto
+app/main.py — Phase 4 update
+Adds investigation router at /v1/investigate
 """
 
 from contextlib import asynccontextmanager
@@ -36,8 +33,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title       = "Fraud AI Investigator",
         description = (
-            "Agentic AI fraud analysis — payment AML, crypto mixer detection, "
-            "multi-agent orchestration, HITL governance. UAE/MENA fintech."
+            "Agentic AI fraud analysis — payment AML, crypto monitoring, "
+            "LangGraph multi-agent investigation, HITL governance. UAE/MENA."
         ),
         version  = s.app_version,
         lifespan = lifespan,
@@ -53,13 +50,15 @@ def create_app() -> FastAPI:
         allow_headers     = ["*"],
     )
 
-    from app.api.alerts import router as alerts_router
-    from app.api.triage import router as triage_router
-    from app.api.crypto import router as crypto_router
+    from app.api.alerts        import router as alerts_router
+    from app.api.triage        import router as triage_router
+    from app.api.crypto        import router as crypto_router
+    from app.api.investigation import router as investigation_router
 
-    app.include_router(alerts_router, prefix="/v1/alerts", tags=["Alerts"])
-    app.include_router(triage_router, prefix="/v1/triage", tags=["Triage"])
-    app.include_router(crypto_router, prefix="/v1/crypto", tags=["Crypto Monitoring"])
+    app.include_router(alerts_router,        prefix="/v1/alerts",      tags=["Alerts"])
+    app.include_router(triage_router,        prefix="/v1/triage",      tags=["Triage"])
+    app.include_router(crypto_router,        prefix="/v1/crypto",      tags=["Crypto Monitoring"])
+    app.include_router(investigation_router, prefix="/v1/investigate", tags=["Investigation"])
 
     return app
 
