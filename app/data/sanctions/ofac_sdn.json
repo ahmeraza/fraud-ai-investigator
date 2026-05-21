@@ -1,0 +1,145 @@
+[
+  {
+    "uid": "1001",
+    "name": "EASTERN STAR TRADING CORPORATION",
+    "entity_type": "Entity",
+    "programs": [
+      "DPRK"
+    ],
+    "aliases": [
+      {
+        "name": "EAST STAR TRADING CORP",
+        "category": "strong"
+      },
+      {
+        "name": "ESTC",
+        "category": "weak"
+      }
+    ],
+    "all_names": [
+      "EASTERN STAR TRADING CORPORATION",
+      "EAST STAR TRADING CORP",
+      "ESTC"
+    ],
+    "countries": [
+      "KP"
+    ],
+    "remarks": "DPRK weapons procurement.",
+    "is_mena_relevant": true
+  },
+  {
+    "uid": "1002",
+    "name": "MOHAMMAD AL RASHIDI",
+    "entity_type": "Individual",
+    "programs": [
+      "SDGT",
+      "HAMAS"
+    ],
+    "aliases": [
+      {
+        "name": "MOHAMMED AL-RASHIDI",
+        "category": "strong"
+      },
+      {
+        "name": "MUHAMMAD AL RASHIDI",
+        "category": "strong"
+      },
+      {
+        "name": "M. RASHIDI",
+        "category": "weak"
+      }
+    ],
+    "all_names": [
+      "MOHAMMAD AL RASHIDI",
+      "MOHAMMED AL-RASHIDI",
+      "MUHAMMAD AL RASHIDI",
+      "M. RASHIDI"
+    ],
+    "countries": [
+      "YE"
+    ],
+    "remarks": "Senior terrorism financier.",
+    "is_mena_relevant": true
+  },
+  {
+    "uid": "1003",
+    "name": "GULF RESOURCES GENERAL TRADING LLC",
+    "entity_type": "Entity",
+    "programs": [
+      "IRAN",
+      "IFSR"
+    ],
+    "aliases": [
+      {
+        "name": "GULF RESOURCES FZE",
+        "category": "strong"
+      },
+      {
+        "name": "GR TRADING",
+        "category": "weak"
+      }
+    ],
+    "all_names": [
+      "GULF RESOURCES GENERAL TRADING LLC",
+      "GULF RESOURCES FZE",
+      "GR TRADING"
+    ],
+    "countries": [
+      "IR",
+      "AE"
+    ],
+    "remarks": "UAE-registered Iranian sanctions evasion front company.",
+    "is_mena_relevant": true
+  },
+  {
+    "uid": "1004",
+    "name": "HORIZON CAPITAL GROUP",
+    "entity_type": "Entity",
+    "programs": [
+      "RUSSIA"
+    ],
+    "aliases": [
+      {
+        "name": "HCG HOLDINGS",
+        "category": "strong"
+      }
+    ],
+    "all_names": [
+      "HORIZON CAPITAL GROUP",
+      "HCG HOLDINGS"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "remarks": "Russian entity subject to blocking sanctions.",
+    "is_mena_relevant": true
+  },
+  {
+    "uid": "1005",
+    "name": "SHELL HOLDINGS INTERNATIONAL",
+    "entity_type": "Entity",
+    "programs": [
+      "IRAN"
+    ],
+    "aliases": [
+      {
+        "name": "SHELL HOLDINGS INTL LTD",
+        "category": "strong"
+      },
+      {
+        "name": "SHI LIMITED",
+        "category": "strong"
+      }
+    ],
+    "all_names": [
+      "SHELL HOLDINGS INTERNATIONAL",
+      "SHELL HOLDINGS INTL LTD",
+      "SHI LIMITED"
+    ],
+    "countries": [
+      "IR"
+    ],
+    "remarks": "Iranian petroleum company front.",
+    "is_mena_relevant": true
+  }
+]
