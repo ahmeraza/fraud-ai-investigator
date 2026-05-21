@@ -1,0 +1,59 @@
+{
+  "total_transactions": 590540,
+  "fraud_count": 20663,
+  "non_fraud_count": 569877,
+  "fraud_rate": 0.035,
+  "amount_usd": {
+    "overall_mean": 135.03,
+    "fraud_mean": 149.24,
+    "non_fraud_mean": 134.51,
+    "median": 68.77,
+    "p95": 445.0,
+    "max": 31937.39
+  },
+  "product_codes": {
+    "W": 439670,
+    "C": 68519,
+    "R": 37699,
+    "H": 33024,
+    "S": 11628
+  },
+  "card_networks": {
+    "visa": 384767,
+    "mastercard": 189217,
+    "american express": 8328,
+    "discover": 6651
+  },
+  "device_types": {
+    "desktop": 85165,
+    "mobile": 55645
+  },
+  "missing_values_pct": {
+    "card4": 0.3,
+    "card6": 0.3,
+    "addr1": 11.1,
+    "addr2": 11.1,
+    "dist1": 59.7,
+    "P_emaildomain": 16.0,
+    "R_emaildomain": 76.8,
+    "D1": 0.2,
+    "M1": 45.9,
+    "M2": 45.9,
+    "M3": 45.9,
+    "V1": 47.3,
+    "V3": 47.3,
+    "V4": 47.3,
+    "id_12": 75.6,
+    "id_15": 76.1,
+    "id_16": 78.1,
+    "id_28": 76.1,
+    "id_29": 76.1,
+    "id_31": 76.2,
+    "id_35": 76.1,
+    "id_36": 76.1,
+    "id_37": 76.1,
+    "id_38": 76.1,
+    "DeviceType": 76.2,
+    "DeviceInfo": 79.9
+  }
+}
