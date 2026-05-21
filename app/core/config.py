@@ -1,11 +1,13 @@
 """
 app/core/config.py
 ──────────────────
-Application settings — updated for OFAC Priority 1.
+Application settings — updated for crypto monitoring.
 
-Changes:
-  - high_risk_countries expanded to full 2024 FATF grey + black list (20 countries)
-  - ofac_score_threshold added (default 75 — tunes fuzzy match sensitivity)
+New settings added:
+  etherscan_api_key           — Etherscan V2 API key (free at etherscan.io)
+  crypto_mixer_score_threshold — minimum score to trigger crypto alert (default 60)
+  crypto_high_value_eth       — ETH amount considered high-value (default 10 ETH)
+  eth_to_aed_rate             — approximate ETH/AED rate for reporting
 """
 
 from functools import lru_cache
@@ -32,41 +34,32 @@ class Settings(BaseSettings):
     gemini_model  : str = Field(default="gemini-2.5-flash-preview-05-20")
     groq_model    : str = Field(default="llama3-70b-8192")
 
-    # ── Thresholds ────────────────────────────────────────────────────────────
+    # ── Crypto monitoring ─────────────────────────────────────────────────────
+    etherscan_api_key           : str   = Field(default="", description="Etherscan V2 API key — free at etherscan.io/myapikey")
+    crypto_mixer_score_threshold: int   = Field(default=60,      description="Min score to trigger crypto alert (0-100)")
+    crypto_high_value_eth       : float = Field(default=10.0,    description="ETH amount considered high-value")
+    eth_to_aed_rate             : float = Field(default=12_000.0,description="Approximate ETH/AED conversion rate")
+
+    # ── Payment thresholds ────────────────────────────────────────────────────
     high_value_threshold_aed     : float = Field(default=40_000.0)
     critical_amount_threshold_aed: float = Field(default=200_000.0)
+
+    # ── OFAC sanctions screening ──────────────────────────────────────────────
+    ofac_score_threshold: int = Field(default=75)
 
     # ── Risk bands ────────────────────────────────────────────────────────────
     risk_band_low   : int = Field(default=30)
     risk_band_medium: int = Field(default=70)
     risk_band_high  : int = Field(default=90)
 
-    # ── OFAC sanctions screening ──────────────────────────────────────────────
-    ofac_score_threshold: int = Field(
-        default=75,
-        description=(
-            "Minimum fuzzy match score to trigger OFAC alert. "
-            "75 = STRONG match. Lower = more alerts, higher FP rate."
-        ),
-    )
-
     # ── FATF 2024 high-risk jurisdictions ─────────────────────────────────────
-    # Black list (FATF Call for Action — highest risk):
-    #   KP North Korea, IR Iran, MM Myanmar
-    # Grey list (Enhanced Monitoring):
-    #   SY Syria, YE Yemen, SD Sudan, PK Pakistan, PH Philippines,
-    #   HT Haiti, LA Laos, NG Nigeria, TZ Tanzania, CM Cameroon,
-    #   CD DRC, AO Angola
-    # Additional OFAC/UN sanctioned:
-    #   CU Cuba, VE Venezuela, BY Belarus, LY Libya, RU Russia
     high_risk_countries: list[str] = Field(
         default=[
-            "KP", "IR", "MM",           # FATF black list
-            "SY", "YE", "SD", "PK",     # FATF grey list (MENA-adjacent)
-            "PH", "HT", "LA", "NG",     # FATF grey list (other)
-            "TZ", "CM", "CD", "AO",     # FATF grey list (Africa)
-            "CU", "VE", "BY", "LY",     # OFAC/UN additional
-            "RU",                        # Russia sanctions (2022+)
+            "KP", "IR", "MM",
+            "SY", "YE", "SD", "PK",
+            "PH", "HT", "LA", "NG",
+            "TZ", "CM", "CD", "AO",
+            "CU", "VE", "BY", "LY", "RU",
         ]
     )
 
@@ -76,6 +69,8 @@ class Settings(BaseSettings):
     def has_gemini_key(self) -> bool: return bool(self.gemini_api_key)
     @property
     def has_groq_key(self) -> bool:   return bool(self.groq_api_key)
+    @property
+    def has_etherscan_key(self) -> bool: return bool(self.etherscan_api_key)
 
     def risk_band_label(self, score: int) -> str:
         if score < self.risk_band_low:    return "LOW"

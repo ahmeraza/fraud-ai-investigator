@@ -67,3 +67,4 @@ Thumbs.db
 # Uncomment below if you ever add real data:
 # app/data/real_*.json
 app/data/ieee_cis/*.csv
+app/data/crypto/screening_results.json
