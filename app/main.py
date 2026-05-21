@@ -1,20 +1,12 @@
 """
 app/main.py
 ────────────
-FastAPI application entry point — updated for Week 2.
+FastAPI application entry point — Phase 3.
 
-Changes from Week 1:
-  - Alerts router registered at /v1/alerts
-  - Startup log now shows alert store stats
-
-Run with:
-    uv run uvicorn app.main:app --reload
-
-Then open: http://localhost:8000/docs
+Phase 3 change: triage router registered at /v1/triage.
 """
 
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -28,42 +20,43 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_logging()
-    settings = get_settings()
-    logger.info(f"Starting Fraud AI Investigator v{settings.app_version}")
-    logger.info(f"Environment: {settings.app_env}")
-    logger.info(f"Gemini key present: {settings.has_gemini_key}")
-    logger.info(f"Groq key present: {settings.has_groq_key}")
+    s = get_settings()
+    logger.info(f"Starting Fraud AI Investigator v{s.app_version}")
+    logger.info(f"Environment : {s.app_env}")
+    logger.info(f"Gemini key  : {s.has_gemini_key}")
+    logger.info(f"Groq key    : {s.has_groq_key}")
     yield
     logger.info("Shutting down")
 
 
 def create_app() -> FastAPI:
-    settings = get_settings()
+    s = get_settings()
 
     app = FastAPI(
-        title="Fraud AI Investigator",
-        description=(
-            "Agentic AI system for end-to-end fraud analysis. "
-            "Multi-agent orchestration, explainable risk scoring, "
-            "and human-in-the-loop governance for MENA fintech platforms."
+        title       = "Fraud AI Investigator",
+        description = (
+            "Agentic AI fraud analysis — multi-agent orchestration, "
+            "explainable risk scoring, HITL governance. UAE/MENA fintech."
         ),
-        version=settings.app_version,
-        lifespan=lifespan,
-        docs_url="/docs",
-        redoc_url="/redoc",
+        version  = s.app_version,
+        lifespan = lifespan,
+        docs_url = "/docs",
+        redoc_url= "/redoc",
     )
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"] if settings.is_development else ["http://localhost:8501"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_origins     = ["*"] if s.is_development else ["http://localhost:8501"],
+        allow_credentials = True,
+        allow_methods     = ["*"],
+        allow_headers     = ["*"],
     )
 
-    # ── Routers ───────────────────────────────────────────────────────────────
     from app.api.alerts import router as alerts_router
+    from app.api.triage import router as triage_router
+
     app.include_router(alerts_router, prefix="/v1/alerts", tags=["Alerts"])
+    app.include_router(triage_router, prefix="/v1/triage", tags=["Triage"])
 
     return app
 
@@ -78,13 +71,10 @@ def root():
 
 @app.get("/health", response_model=HealthResponse, tags=["System"])
 def health() -> HealthResponse:
-    settings = get_settings()
+    s = get_settings()
     return HealthResponse(
-        status="ok",
-        version=settings.app_version,
-        environment=settings.app_env,
-        llm_providers={
-            "gemini": settings.has_gemini_key,
-            "groq": settings.has_groq_key,
-        },
+        status         = "ok",
+        version        = s.app_version,
+        environment    = s.app_env,
+        llm_providers  = {"gemini": s.has_gemini_key, "groq": s.has_groq_key},
     )
