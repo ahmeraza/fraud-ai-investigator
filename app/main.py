@@ -1,9 +1,9 @@
 """
 app/main.py
 ────────────
-FastAPI application entry point — Phase 3.
+FastAPI application entry point — updated for crypto monitoring.
 
-Phase 3 change: triage router registered at /v1/triage.
+New in this version: crypto router registered at /v1/crypto
 """
 
 from contextlib import asynccontextmanager
@@ -22,9 +22,10 @@ async def lifespan(app: FastAPI):
     setup_logging()
     s = get_settings()
     logger.info(f"Starting Fraud AI Investigator v{s.app_version}")
-    logger.info(f"Environment : {s.app_env}")
-    logger.info(f"Gemini key  : {s.has_gemini_key}")
-    logger.info(f"Groq key    : {s.has_groq_key}")
+    logger.info(f"Environment   : {s.app_env}")
+    logger.info(f"Gemini key    : {s.has_gemini_key}")
+    logger.info(f"Groq key      : {s.has_groq_key}")
+    logger.info(f"Etherscan key : {s.has_etherscan_key}")
     yield
     logger.info("Shutting down")
 
@@ -35,8 +36,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title       = "Fraud AI Investigator",
         description = (
-            "Agentic AI fraud analysis — multi-agent orchestration, "
-            "explainable risk scoring, HITL governance. UAE/MENA fintech."
+            "Agentic AI fraud analysis — payment AML, crypto mixer detection, "
+            "multi-agent orchestration, HITL governance. UAE/MENA fintech."
         ),
         version  = s.app_version,
         lifespan = lifespan,
@@ -54,9 +55,11 @@ def create_app() -> FastAPI:
 
     from app.api.alerts import router as alerts_router
     from app.api.triage import router as triage_router
+    from app.api.crypto import router as crypto_router
 
     app.include_router(alerts_router, prefix="/v1/alerts", tags=["Alerts"])
     app.include_router(triage_router, prefix="/v1/triage", tags=["Triage"])
+    app.include_router(crypto_router, prefix="/v1/crypto", tags=["Crypto Monitoring"])
 
     return app
 
@@ -73,8 +76,12 @@ def root():
 def health() -> HealthResponse:
     s = get_settings()
     return HealthResponse(
-        status         = "ok",
-        version        = s.app_version,
-        environment    = s.app_env,
-        llm_providers  = {"gemini": s.has_gemini_key, "groq": s.has_groq_key},
+        status      = "ok",
+        version     = s.app_version,
+        environment = s.app_env,
+        llm_providers = {
+            "gemini"    : s.has_gemini_key,
+            "groq"      : s.has_groq_key,
+            "etherscan" : s.has_etherscan_key,
+        },
     )
