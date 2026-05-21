@@ -29,8 +29,13 @@ logger = get_logger(__name__)
 router = APIRouter()
 
 # Initialised once when module loads — pre-loads transaction + KYC data
-_triage_service = TriageService()
+_triage_service = None
 
+def _get_service() -> TriageService:
+    global _triage_service
+    if _triage_service is None:
+        _triage_service = TriageService()
+    return _triage_service
 
 # ── Schemas ───────────────────────────────────────────────────────────────────
 
@@ -110,7 +115,7 @@ def batch_triage(body: BatchTriageRequest) -> BatchTriageResponse:
             ),
         )
 
-    results_map = _triage_service.triage_batch(
+    results_map = _get_service().triage_batch(
         alerts     = all_alerts,
         max_alerts = body.max_alerts,
     )
@@ -165,7 +170,7 @@ def triage_single(alert_id: str) -> TriageResultResponse:
             status_code=400,
             detail=f"Alert is {alert.status.value}. Only PENDING alerts can be triaged.",
         )
-    result = _triage_service.triage(alert)
+    result = _get_service().triage(alert)
     if result is None:
         raise HTTPException(status_code=500, detail="Triage failed — check server logs.")
     alert = store.get(alert_id)
