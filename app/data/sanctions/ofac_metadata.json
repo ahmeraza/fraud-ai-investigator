@@ -1,0 +1,20 @@
+{
+  "source": "US Treasury OFAC SDN List",
+  "source_url": "https://www.treasury.gov/ofac/downloads/sdn.xml",
+  "downloaded_at": "2026-05-21T11:11:31.481930+00:00",
+  "is_sample_data": true,
+  "total_entities": 5,
+  "individuals": 1,
+  "entities": 4,
+  "mena_relevant": 5,
+  "total_aliases": 10,
+  "total_names": 15,
+  "program_counts": {
+    "IRAN": 2,
+    "DPRK": 1,
+    "SDGT": 1,
+    "HAMAS": 1,
+    "IFSR": 1,
+    "RUSSIA": 1
+  }
+}
