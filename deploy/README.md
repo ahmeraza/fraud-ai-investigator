@@ -13,5 +13,4 @@ short_description: Agentic AI fraud investigation for UAE/MENA fintech
 
 Agentic AI system for end-to-end fraud analysis — UAE/MENA AML compliance.
 
-**API docs:** `/docs`  
-**Dashboard:** port 8501
+Built with FastAPI + LangGraph + Gemini + Streamlit.
