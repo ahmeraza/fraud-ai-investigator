@@ -21,7 +21,7 @@ import json
 import time
 from typing import Optional
 
-import google.generativeai as genai
+from google import genai
 from groq import Groq
 
 from app.core.config import get_settings
@@ -81,17 +81,17 @@ class GeminiProvider:
     def __init__(self) -> None:
         if not settings.has_gemini_key:
             raise RuntimeError("GEMINI_API_KEY not set in .env")
-        genai.configure(api_key=settings.gemini_api_key)
-        self._model = genai.GenerativeModel(settings.gemini_model)
+        self._client = genai.Client(api_key=settings.gemini_api_key)
         logger.info(f"GeminiProvider ready | model={settings.gemini_model}")
 
     def complete(self, prompt: str, system_prompt: str) -> LLMResponse:
         start       = time.monotonic()
         full_prompt = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
-
-        response = self._model.generate_content(
-            full_prompt,
-            generation_config=genai.GenerationConfig(
+        
+        response = self._client.models.generate_content(
+            model=settings.gemini_model,
+            contents=full_prompt,
+            config=genai.types.GenerateContentConfig(
                 temperature=0.1,        # low = consistent JSON output
                 max_output_tokens=1024,
             ),
