@@ -1,6 +1,6 @@
 """
-app/main.py — Phase 4 update
-Adds investigation router at /v1/investigate
+app/main.py — Phase 5 update
+Adds HITL router at /v1/hitl
 """
 
 from contextlib import asynccontextmanager
@@ -54,11 +54,13 @@ def create_app() -> FastAPI:
     from app.api.triage        import router as triage_router
     from app.api.crypto        import router as crypto_router
     from app.api.investigation import router as investigation_router
+    from app.api.hitl          import router as hitl_router
 
     app.include_router(alerts_router,        prefix="/v1/alerts",      tags=["Alerts"])
     app.include_router(triage_router,        prefix="/v1/triage",      tags=["Triage"])
     app.include_router(crypto_router,        prefix="/v1/crypto",      tags=["Crypto Monitoring"])
     app.include_router(investigation_router, prefix="/v1/investigate", tags=["Investigation"])
+    app.include_router(hitl_router,          prefix="/v1/hitl",        tags=["HITL Review"])
 
     return app
 
@@ -79,8 +81,8 @@ def health() -> HealthResponse:
         version     = s.app_version,
         environment = s.app_env,
         llm_providers = {
-            "gemini"    : s.has_gemini_key,
-            "groq"      : s.has_groq_key,
-            "etherscan" : s.has_etherscan_key,
+            "gemini"   : s.has_gemini_key,
+            "groq"     : s.has_groq_key,
+            "etherscan": s.has_etherscan_key,
         },
     )
