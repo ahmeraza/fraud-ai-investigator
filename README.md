@@ -11,6 +11,8 @@ short_description: Agentic AI fraud investigation for UAE/MENA fintech
 
 # Fraud AI Investigator
 
+**Live demo:** https://ahmeraza-fraud-ai-investigator.hf.space/docs
+
 > An agentic AI system that automates end-to-end fraud analysis using multi-agent orchestration, explainable risk scoring, and human-in-the-loop governance — built for digital financial platforms operating in the UAE/MENA region.
 
 ---
