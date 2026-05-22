@@ -6,8 +6,9 @@
 #   Stage 1 (builder): installs Python dependencies
 #   Stage 2 (runtime): copies only what's needed — smaller image
 #
-# Build:  docker build -t fraud-ai-investigator .
-# Run:    docker run -p 8000:8000 --env-file .env fraud-ai-investigator
+# Local:  docker build -t fraud-ai-investigator .
+#         docker run -p 7860:7860 --env-file .env fraud-ai-investigator
+# HF:     Automatically built by Hugging Face Spaces
 # ─────────────────────────────────────────────────────────────
 
 # ── Stage 1: Builder ─────────────────────────────────────────
@@ -15,52 +16,47 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /app
 
-# Install uv (fast package installer)
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Copy dependency files first (Docker layer caching)
-# If these don't change, the pip install layer is reused
 COPY pyproject.toml .
 COPY uv.lock* .
 
-# Install dependencies into a virtual environment
 RUN uv venv /opt/venv && \
     uv pip install --python /opt/venv/bin/python \
     fastapi uvicorn pydantic pydantic-settings \
     langchain-core google-genai groq langgraph \
     rapidfuzz pandas numpy requests httpx \
-    streamlit plotly
+    streamlit plotly faker
 
 # ── Stage 2: Runtime ─────────────────────────────────────────
 FROM python:3.12-slim AS runtime
 
 WORKDIR /app
 
-# Copy virtual environment from builder stage
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy application code
 COPY app/       ./app/
 COPY dashboard/ ./dashboard/
 COPY scripts/   ./scripts/
 
-# Create data directories (populated at runtime or via volume)
 RUN mkdir -p app/data/sanctions \
              app/data/ieee_cis  \
-             app/data/crypto
+             app/data/crypto    \
+             app/data/fraud_memory
 
-# Non-root user for security
+# Generate synthetic data at build time so Space works immediately
+RUN python scripts/generate_data.py 2>/dev/null || true
+RUN python scripts/load_ofac_data.py --sample 2>/dev/null || true
+
+# Non-root user for security (required by Hugging Face)
 RUN useradd --create-home appuser && chown -R appuser /app
 USER appuser
 
-# Expose API port
-EXPOSE 8000
+# Port 7860 — required by Hugging Face Spaces
+EXPOSE 7860
 
-# Health check — Docker will restart the container if this fails
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:7860/health')"
 
-# Default: run the API
-# Override with: docker run ... streamlit run dashboard/streamlit_app.py
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
