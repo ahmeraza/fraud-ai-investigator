@@ -55,10 +55,12 @@ Transaction Alert
 | Crypto monitoring | Etherscan V2 API (free tier) |
 | Sanctions screening | OFAC SDN real data (treasury.gov) |
 | Transaction data | IEEE-CIS real dataset (Kaggle) |
+| On-chain detection | Mixer detection, VARA compliance |
 | Dashboard | Streamlit |
 | Hosting | Hugging Face Spaces (Docker, free) |
 | Package manager | uv |
 | Testing | pytest + pytest-cov |
+
 
 **Cost to run: $0/month** — all free tiers, no credit card required.
 
@@ -149,16 +151,16 @@ fraud-ai-investigator/
 
 | Phase | Description | Status |
 |---|---|---|
-| Phase 1 | Environment, models, synthetic dataset | ✅ Complete |
+| Phase 1 | Repo setup, Python env, folder structure, synthetic dataset | ✅ Complete |
 | Phase 2 | Alert engine (5 rules), REST API, audit trail | ✅ Complete |
 | Phase 3 | LLM triage — Gemini scoring + regulatory narratives | ✅ Complete |
 | OFAC | Real OFAC SDN sanctions screening, Arabic fuzzy matching | ✅ Complete |
-| IEEE-CIS | Real transaction data, unified data loader | ✅ Complete |
+| IEEE-CIS | Real transaction data (590k), unified data loader | ✅ Complete |
 | Crypto | Etherscan V2, mixer detection, VARA compliance | ✅ Complete |
 | Phase 4 | LangGraph multi-agent investigation (5 parallel agents) | ✅ Complete |
 | Phase 5 | HITL review, fraud memory, enhanced audit trail | ✅ Complete |
-| Phase 6 | Streamlit dashboard + Docker packaging | ⏳ Planned |
-| Phase 7 | Deploy to Hugging Face Spaces (live demo) | ⏳ Planned |
+| Phase 6 | Streamlit dashboard + Docker packaging | ✅ Complete |
+| Phase 7 | Deploy to Hugging Face Spaces (live demo) | 🔄 In progress |
 
 ---
 
