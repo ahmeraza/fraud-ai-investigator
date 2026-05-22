@@ -68,3 +68,5 @@ Thumbs.db
 # app/data/real_*.json
 app/data/ieee_cis/*.csv
 app/data/crypto/screening_results.json
+app/data/fraud_memory.json
+doc/Screenshots/
