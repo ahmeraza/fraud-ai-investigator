@@ -1,3 +1,14 @@
+---
+title: Fraud AI Investigator
+emoji: 🔍
+colorFrom: blue
+colorTo: red
+sdk: docker
+pinned: false
+license: mit
+short_description: Agentic AI fraud investigation for UAE/MENA fintech
+---
+
 # Fraud AI Investigator
 
 > An agentic AI system that automates end-to-end fraud analysis using multi-agent orchestration, explainable risk scoring, and human-in-the-loop governance — built for digital financial platforms operating in the UAE/MENA region.
