@@ -1,48 +1,66 @@
-# ── Fraud AI Investigator — Dockerfile ────────────────────────────────────────
+# Dockerfile
+# ─────────────────────────────────────────────────────────────
+# Fraud AI Investigator — Production Docker image
 #
-# Single-image build that runs both:
-#   - FastAPI backend on port 8000 (internal only)
-#   - Streamlit dashboard on port 8501 (public)
+# Multi-stage build:
+#   Stage 1 (builder): installs Python dependencies
+#   Stage 2 (runtime): copies only what's needed — smaller image
 #
-# Deploy to Hugging Face Spaces:
-#   1. Create a Docker Space at huggingface.co/new-space
-#   2. Set app_port: 8501 in Space settings
-#   3. Add GEMINI_API_KEY and GROQ_API_KEY as Space Secrets
-#   4. Push this repo — auto-deploys on every push
-# ──────────────────────────────────────────────────────────────────────────────
+# Build:  docker build -t fraud-ai-investigator .
+# Run:    docker run -p 8000:8000 --env-file .env fraud-ai-investigator
+# ─────────────────────────────────────────────────────────────
 
-FROM python:3.11-slim
-
-# System dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    supervisor \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
+# ── Stage 1: Builder ─────────────────────────────────────────
+FROM python:3.12-slim AS builder
 
 WORKDIR /app
 
-# Copy dependency files first (better Docker layer caching)
-COPY pyproject.toml .
-COPY README.md .
+# Install uv (fast package installer)
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Install dependencies
-RUN uv venv && uv sync --no-dev
+# Copy dependency files first (Docker layer caching)
+# If these don't change, the pip install layer is reused
+COPY pyproject.toml .
+COPY uv.lock* .
+
+# Install dependencies into a virtual environment
+RUN uv venv /opt/venv && \
+    uv pip install --python /opt/venv/bin/python \
+    fastapi uvicorn pydantic pydantic-settings \
+    langchain-core google-genai groq langgraph \
+    rapidfuzz pandas numpy requests httpx \
+    streamlit plotly
+
+# ── Stage 2: Runtime ─────────────────────────────────────────
+FROM python:3.12-slim AS runtime
+
+WORKDIR /app
+
+# Copy virtual environment from builder stage
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code
-COPY app/ ./app/
+COPY app/       ./app/
 COPY dashboard/ ./dashboard/
-COPY scripts/ ./scripts/
+COPY scripts/   ./scripts/
 
-# Generate synthetic data at build time so the demo works out of the box
-RUN uv run python scripts/generate_data.py
+# Create data directories (populated at runtime or via volume)
+RUN mkdir -p app/data/sanctions \
+             app/data/ieee_cis  \
+             app/data/crypto
 
-# Supervisor config to run both services
-COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Non-root user for security
+RUN useradd --create-home appuser && chown -R appuser /app
+USER appuser
 
-EXPOSE 8000 8501
+# Expose API port
+EXPOSE 8000
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Health check — Docker will restart the container if this fails
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+
+# Default: run the API
+# Override with: docker run ... streamlit run dashboard/streamlit_app.py
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
