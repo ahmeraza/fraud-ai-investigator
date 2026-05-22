@@ -30,7 +30,8 @@ st.set_page_config(
 )
 
 # ── Constants ─────────────────────────────────────────────────────────────────
-API_BASE = "http://localhost:8000"
+import os
+API_BASE = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 RISK_COLORS = {
     "LOW"     : "#4CAF50",
