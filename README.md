@@ -12,30 +12,36 @@ Transaction Alert
        ▼
 ┌─────────────────┐
 │  Alert Engine   │  ← Deterministic rules (fast, cheap)
-│  (Rule-based)   │
+│  5 fraud rules  │     High-value, FATF corridor, device mismatch,
+│  OFAC screening │     new account, OFAC name match
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│  Triage Agent   │  ← LLM: severity scoring + narrative
+│  LLM Triage     │  ← Gemini Flash: severity score + regulatory narrative
+│  (Phase 3)      │
 └────────┬────────┘
          │
-    ┌────┴─────┐
-    ▼    ▼     ▼
- [TX] [KYC] [Sanctions]  ← Parallel specialist agents (LangGraph)
-    └────┬─────┘
-         ▼
-┌─────────────────┐
-│  Risk Synthesis │  ← Score 0–100 + case narrative
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│  HITL Review    │  ← Analyst approves / closes
-└────────┬────────┘
-         ▼
-┌─────────────────┐
-│  Audit Trail    │  ← Full immutable case timeline
-└─────────────────┘
+    ┌────┴──────────────────────┐
+    ▼          ▼               ▼
+[TX Agent] [KYC Agent]  [Sanctions Agent]  ← Parallel LangGraph agents
+    │    [Crypto Agent]        │            (Phase 4)
+    └────────────┬─────────────┘
+                 ▼
+        ┌─────────────────┐
+        │ Synthesis Agent │  ← LLM: composite score + investigation narrative
+        │  + Fraud Memory │     includes similar past cases (Phase 5)
+        └────────┬────────┘
+                 ▼
+        ┌─────────────────┐
+        │   HITL Review   │  ← Analyst verdict: CONFIRMED_FRAUD /
+        │   (Phase 5)     │     FALSE_POSITIVE / ESCALATED
+        └────────┬────────┘
+                 ▼
+        ┌─────────────────┐
+        │   Audit Trail   │  ← Full immutable case timeline
+        │   + STR Flag    │     CBUAE STR obligation if confirmed
+        └─────────────────┘
 ```
 
 ## Tech stack
@@ -46,6 +52,9 @@ Transaction Alert
 | Agent orchestration | LangGraph |
 | Primary LLM | Gemini 2.5 Flash (free tier) |
 | Fallback LLM | Groq / Llama 3 (free tier) |
+| Crypto monitoring | Etherscan V2 API (free tier) |
+| Sanctions screening | OFAC SDN real data (treasury.gov) |
+| Transaction data | IEEE-CIS real dataset (Kaggle) |
 | Dashboard | Streamlit |
 | Hosting | Hugging Face Spaces (Docker, free) |
 | Package manager | uv |
@@ -60,40 +69,40 @@ Transaction Alert
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/fraud-ai-investigator.git
+git clone https://github.com/ahmeraza/fraud-ai-investigator.git
 cd fraud-ai-investigator
 ```
 
-### 2. Install uv (fast Python package manager)
+### 2. Install uv
 
 ```bash
-# Mac/Linux:
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows (PowerShell):
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 ### 3. Install dependencies
 
 ```bash
-uv venv
-uv sync
+uv venv && uv sync
+uv pip install fastapi uvicorn pydantic pydantic-settings faker httpx pytest \
+  pytest-cov pytest-dotenv langchain-core google-genai groq langgraph \
+  rapidfuzz pandas numpy requests
 ```
 
-### 4. Set up environment variables
+### 4. Configure API keys
 
 ```bash
 cp .env.example .env
-# Edit .env and add your free API keys:
-#   GEMINI_API_KEY → https://aistudio.google.com/apikey
-#   GROQ_API_KEY   → https://console.groq.com/keys
+# Add to .env:
+#   GEMINI_API_KEY    → https://aistudio.google.com/apikey
+#   GROQ_API_KEY      → https://console.groq.com/keys
+#   ETHERSCAN_API_KEY → https://etherscan.io/myapikey  (optional)
 ```
 
-### 5. Generate the synthetic dataset
+### 5. Generate synthetic dataset
 
 ```bash
 uv run python scripts/generate_data.py
+uv run python scripts/load_ofac_data.py --sample
 ```
 
 ### 6. Start the API
@@ -106,7 +115,7 @@ uv run uvicorn app.main:app --reload
 ### 7. Run tests
 
 ```bash
-uv run pytest tests/ -v --cov=app
+uv run pytest tests/ -v
 ```
 
 ---
@@ -116,25 +125,22 @@ uv run pytest tests/ -v --cov=app
 ```
 fraud-ai-investigator/
 ├── app/
+│   ├── agents/         # LangGraph specialist agents (Phase 4)
 │   ├── api/            # FastAPI route definitions
-│   ├── core/           # Config, logging, constants
-│   ├── llm/            # Gemini + Groq client wrappers
-│   ├── agents/         # Specialist fraud agents
-│   ├── graph/          # LangGraph workflow definition
-│   ├── services/       # Business logic (alert engine, triage, HITL)
-│   ├── data/           # Synthetic JSON datasets
-│   ├── shared/         # Pydantic models shared across layers
-│   └── main.py         # FastAPI application entry point
-├── dashboard/          # Streamlit UI
-├── notebooks/          # Jupyter exploration notebooks
-├── scripts/            # Utility scripts (data gen, etc.)
-├── tests/              # pytest test suite
-├── deploy/             # Docker + Hugging Face config
-├── doc/Screenshots/    # UI screenshots for README
-├── .env.example        # Environment variable template
-├── pyproject.toml      # Dependencies (managed by uv)
-├── Dockerfile          # Container definition
-└── docker-compose.yml  # Local multi-service setup
+│   ├── core/           # Config, logging
+│   ├── crypto/         # Etherscan client + mixer detector (crypto branch)
+│   ├── graph/          # LangGraph graph definition (Phase 4)
+│   ├── llm/            # Gemini + Groq client wrappers (Phase 3)
+│   ├── services/       # Alert engine, triage, HITL, fraud memory
+│   ├── data/           # Synthetic + IEEE-CIS + OFAC data
+│   ├── shared/         # Pydantic models
+│   └── main.py
+├── dashboard/          # Streamlit UI (Phase 6)
+├── notebooks/          # Phase-by-phase EDA and validation (non-production)
+├── scripts/            # Data generation and loading scripts
+├── tests/              # pytest test suite (~270+ tests)
+├── deploy/             # Docker + Hugging Face config (Phase 7)
+└── doc/Screenshots/    # Charts saved by notebooks
 ```
 
 ---
@@ -143,28 +149,33 @@ fraud-ai-investigator/
 
 | Phase | Description | Status |
 |---|---|---|
-| Phase 1 | Repo setup, Python env, folder structure, synthetic dataset | ✅ Complete |
-| Phase 2 | Pydantic models, alert engine rules, FastAPI endpoints | ✅ Complete |
-| Phase 3 | Triage service + LLM narrative generation | 🔄 In progress |
-| Phase 4 | LangGraph multi-agent investigation | ⏳ Planned |
-| Phase 5 | HITL review + fraud memory + audit trail | ⏳ Planned |
+| Phase 1 | Environment, models, synthetic dataset | ✅ Complete |
+| Phase 2 | Alert engine (5 rules), REST API, audit trail | ✅ Complete |
+| Phase 3 | LLM triage — Gemini scoring + regulatory narratives | ✅ Complete |
+| OFAC | Real OFAC SDN sanctions screening, Arabic fuzzy matching | ✅ Complete |
+| IEEE-CIS | Real transaction data, unified data loader | ✅ Complete |
+| Crypto | Etherscan V2, mixer detection, VARA compliance | ✅ Complete |
+| Phase 4 | LangGraph multi-agent investigation (5 parallel agents) | ✅ Complete |
+| Phase 5 | HITL review, fraud memory, enhanced audit trail | ✅ Complete |
 | Phase 6 | Streamlit dashboard + Docker packaging | ⏳ Planned |
 | Phase 7 | Deploy to Hugging Face Spaces (live demo) | ⏳ Planned |
 
 ---
 
-## MENA-specific features
+## UAE/MENA-specific features
 
-- AED currency support with UAE Central Bank reporting thresholds (AED 40,000)
-- FATF high-risk jurisdiction corridor scoring
-- Arabic name transliteration-aware sanctions matching
-- UAE/GCC country risk weighting in scoring model
+- AED currency with CBUAE AED 40,000 reporting threshold enforcement
+- FATF 2024 grey/black list — 20 high-risk jurisdictions
+- Real OFAC SDN list (12,000+ entities, updated from treasury.gov)
+- Arabic name transliteration matching (Mohammed/Muhammad/Mohammad variants)
+- VARA crypto compliance — mixer detection for Dubai-licensed VASPs
+- STR (Suspicious Transaction Report) obligation flagging per CBUAE AML/CFT
 
 ---
 
 ## Contributing
 
-This is a portfolio project. Issues and PRs welcome.
+Portfolio project. Issues and PRs welcome.
 
 ## License
 
