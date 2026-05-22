@@ -1,51 +1,63 @@
-version: "3.9"
-
-# ── Local development: runs both services with hot reload ──────────────────────
-# Usage:
-#   docker compose up --build
-#   FastAPI docs:   http://localhost:8000/docs
-#   Streamlit UI:   http://localhost:8501
+# docker-compose.yml
+# ─────────────────────────────────────────────────────────────
+# Local development with two services:
+#   api       → FastAPI backend  (localhost:8000)
+#   dashboard → Streamlit UI     (localhost:8501)
+#
+# Run:    docker compose up
+# Stop:   docker compose down
+# Logs:   docker compose logs -f api
+# ─────────────────────────────────────────────────────────────
 
 services:
 
+  # ── FastAPI backend ────────────────────────────────────────
   api:
-    build: .
+    build:
+      context: .
+      target:  runtime          # use the runtime stage
+    image: fraud-ai-investigator:latest
+    container_name: fraud-api
     ports:
       - "8000:8000"
-    volumes:
-      - ./app:/app/app          # hot reload in development
-      - ./scripts:/app/scripts
     env_file:
-      - .env
-    environment:
-      - APP_ENV=development
-    command: >
-      uvicorn app.main:app
-      --host 0.0.0.0
-      --port 8000
-      --reload
+      - .env                    # loads GEMINI_API_KEY, GROQ_API_KEY, etc.
+    volumes:
+      # Mount data directory so generated files persist across restarts
+      - ./app/data:/app/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout:  10s
+      retries:  3
+    restart: unless-stopped
 
+  # ── Streamlit dashboard ────────────────────────────────────
   dashboard:
-    build: .
+    build:
+      context: .
+      target:  runtime
+    image: fraud-ai-investigator:latest
+    container_name: fraud-dashboard
     ports:
       - "8501:8501"
-    volumes:
-      - ./dashboard:/app/dashboard
-      - ./app:/app/app
     env_file:
       - .env
     environment:
+      # Tell Streamlit where the API is inside Docker network
       - API_BASE_URL=http://api:8000
     command: >
       streamlit run dashboard/streamlit_app.py
-      --server.port=8501
-      --server.address=0.0.0.0
-      --server.headless=true
+      --server.port 8501
+      --server.address 0.0.0.0
+      --server.headless true
+      --browser.gatherUsageStats false
     depends_on:
       api:
-        condition: service_healthy
+        condition: service_healthy   # wait for API health check before starting
+    restart: unless-stopped
+
+volumes:
+  # Named volume for persistent data across docker compose down/up
+  app_data:

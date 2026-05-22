@@ -1,85 +1,75 @@
 [project]
 name = "fraud-ai-investigator"
 version = "0.1.0"
-description = "Agentic AI fraud investigation system for MENA fintech platforms"
+description = "Agentic AI fraud investigation system for UAE/MENA fintech platforms"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = { text = "MIT" }
 
 authors = [
-    { name = "Your Name", email = "you@email.com" }
+    { name = "Ahmed Raza", email = "araza.09029@gmail.com" }
 ]
 
-keywords = ["fraud-detection", "ai-agents", "langgraph", "fastapi", "fintech", "mena"]
+keywords = ["fraud-detection", "ai-agents", "langgraph", "fastapi", "fintech", "mena", "uae"]
 
 dependencies = [
-    # API framework
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
-
-    # Data validation
     "pydantic>=2.9.0",
     "pydantic-settings>=2.6.0",
-
-    # LLM + agent orchestration
-    "langgraph>=0.2.50",
-    "langchain-core>=0.3.20",
-    "langchain-google-genai>=2.0.5",
-    "langchain-groq>=0.2.1",
-
-    # Dashboard
-    "streamlit>=1.40.0",
-
-    # Utilities
-    "python-dotenv>=1.0.1",
-    "faker>=33.0.0",
-    "httpx>=0.28.0",
+    "faker>=30.0.0",
+    "httpx>=0.27.0",
+    "requests>=2.32.0",
+    "google-genai>=0.8.0",
+    "groq>=0.11.0",
+    "langchain-core>=0.3.0",
+    "langgraph>=0.2.0",
     "rapidfuzz>=3.10.0",
+    "pandas>=2.2.0",
+    "numpy>=2.0.0",
+    "streamlit>=1.39.0",
+    "plotly>=5.24.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3.0",
     "pytest-cov>=6.0.0",
-    "pytest-asyncio>=0.24.0",
-    "httpx>=0.28.0",
+    "pytest-dotenv>=0.5.2",
     "ruff>=0.8.0",
 ]
-
 notebooks = [
     "jupyter>=1.1.0",
     "ipykernel>=6.29.0",
-    "pandas>=2.2.0",
     "matplotlib>=3.9.0",
     "seaborn>=0.13.0",
 ]
 
 [project.urls]
-Repository = "https://github.com/YOUR_USERNAME/fraud-ai-investigator"
-
+Repository = "https://github.com/ahmeraza/fraud-ai-investigator"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
-
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-asyncio_mode = "auto"
-addopts = "-v --tb=short"
+addopts   = "-v --tb=short"
+env_files = [".env"]
 
 [tool.coverage.run]
 source = ["app"]
-omit = ["app/data/*", "*/test*"]
+omit   = ["app/data/*", "*/test*"]
 
 [tool.coverage.report]
 show_missing = true
