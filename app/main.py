@@ -1,11 +1,12 @@
 """
-app/main.py — Phase 5 update
-Adds HITL router at /v1/hitl
+FastAPI application entry point — Phase 7 update.
+Adds HTML landing page at root for Hugging Face Spaces.
 """
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 from app.core.config import get_settings
 from app.core.logging import get_logger, setup_logging
@@ -69,8 +70,61 @@ app = create_app()
 
 
 @app.get("/", include_in_schema=False)
-def root():
-    return {"service": "Fraud AI Investigator", "docs": "/docs", "health": "/health"}
+def root() -> HTMLResponse:
+    return HTMLResponse("""
+    <html>
+    <head>
+        <title>Fraud AI Investigator</title>
+        <style>
+            body { font-family: system-ui; max-width: 700px; margin: 60px auto; padding: 0 20px; }
+            h1 { color: #1a1a2e; }
+            .badge { background: #4CAF50; color: white; padding: 4px 10px; border-radius: 12px; font-size: 13px; }
+            a { color: #1565C0; text-decoration: none; font-weight: 500; }
+            .card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+            .tag { background: #f0f4ff; color: #1565C0; padding: 3px 8px; border-radius: 4px; font-size: 12px; margin: 2px; display: inline-block; }
+        </style>
+    </head>
+    <body>
+        <h1>🔍 Fraud AI Investigator <span class="badge">Running</span></h1>
+        <p>Agentic AI fraud investigation for UAE/MENA fintech — LangGraph multi-agent pipeline with HITL governance.</p>
+
+        <div class="card">
+            <b>📖 API Documentation</b><br>
+            <a href="/docs">Interactive Swagger UI →</a> &nbsp;|&nbsp; <a href="/redoc">ReDoc →</a>
+        </div>
+
+        <div class="card">
+            <b>🔗 Key endpoints</b><br><br>
+            <a href="/health">GET /health</a> — System status<br>
+            <a href="/v1/alerts">GET /v1/alerts</a> — List alerts<br>
+            <a href="/docs#/Investigation">POST /v1/investigate/{id}</a> — LangGraph investigation<br>
+            <a href="/docs#/HITL%20Review">GET /v1/hitl/queue</a> — Analyst review queue
+        </div>
+
+        <div class="card">
+            <b>🛠 Tech stack</b><br><br>
+            <span class="tag">FastAPI</span>
+            <span class="tag">LangGraph</span>
+            <span class="tag">Gemini 2.5 Flash</span>
+            <span class="tag">Groq / Llama 3</span>
+            <span class="tag">OFAC SDN</span>
+            <span class="tag">Etherscan V2</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Pydantic v2</span>
+        </div>
+
+        <div class="card">
+            <b>📊 Pipeline</b><br>
+            <small>Alert Engine → LLM Triage → LangGraph Investigation (5 agents) → HITL Review → Fraud Memory → Audit Trail</small>
+        </div>
+
+        <p><small>
+            <a href="https://github.com/ahmeraza/fraud-ai-investigator">GitHub →</a> &nbsp;|&nbsp;
+            Cost: $0/month (all free tiers)
+        </small></p>
+    </body>
+    </html>
+    """)
 
 
 @app.get("/health", response_model=HealthResponse, tags=["System"])
