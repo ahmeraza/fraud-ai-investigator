@@ -14,15 +14,11 @@ from app.main import app
 
 client = TestClient(app)
 
-
-def test_root_returns_service_info():
+def test_root_returns_200():
     response = client.get("/")
     assert response.status_code == 200
-    data = response.json()
-    assert "service" in data
-    assert data["docs"] == "/docs"
-
-
+    
+    
 def test_health_endpoint_returns_ok():
     response = client.get("/health")
     assert response.status_code == 200

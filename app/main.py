@@ -289,12 +289,14 @@ def create_app() -> FastAPI:
     from app.api.crypto        import router as crypto_router
     from app.api.investigation import router as investigation_router
     from app.api.hitl          import router as hitl_router
+    from app.api.compliance import router as compliance_router
 
     app.include_router(alerts_router,        prefix="/v1/alerts",      tags=["Alerts"])
     app.include_router(triage_router,        prefix="/v1/triage",      tags=["Triage"])
     app.include_router(crypto_router,        prefix="/v1/crypto",      tags=["Crypto Monitoring"])
     app.include_router(investigation_router, prefix="/v1/investigate", tags=["Investigation"])
     app.include_router(hitl_router,          prefix="/v1/hitl",        tags=["HITL Review"])
+    app.include_router(compliance_router, prefix="/v1/compliance", tags=["Compliance Engine"])
 
     return app
 
