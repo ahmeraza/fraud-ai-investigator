@@ -2,7 +2,7 @@
 app/main.py
 ────────────
 FastAPI application entry point — Phase 7 final.
-Includes interactive HTML landing page at root.
+Interactive HTML landing page at root. Option 1: wide layout (1100px).
 """
 
 from contextlib import asynccontextmanager
@@ -35,29 +35,29 @@ body{font-family:system-ui,-apple-system,sans-serif;color:#1a1a1a;background:#ff
 .tag.red{background:#fee8e8;color:#9a2a2a;border-color:#f5b8b8}
 .tag.purple{background:#f0ebfe;color:#5a35c0;border-color:#c8b8f8}
 @keyframes fadeTag{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.hero-desc{font-size:1rem;color:#555;max-width:560px;margin:0 auto 1.5rem;line-height:1.7}
+.hero-desc{font-size:1rem;color:#555;max-width:900px;margin:0 auto 1.5rem;line-height:1.6}
 .btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 a.btn{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid #ddd;color:#1a1a1a;background:#fff;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s}
 a.btn:hover{background:#f5f5f5;border-color:#ccc}
 a.btn-primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 a.btn-primary:hover{background:#333}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:1.5rem 2rem;max-width:860px;margin:0 auto}
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:1.5rem 2rem;max-width:1100px;margin:0 auto}
 .stat{background:#f8f8f8;border-radius:10px;padding:1rem;text-align:center}
 .stat-num{font-size:1.6rem;font-weight:700;color:#1a1a1a}
 .stat-label{font-size:11px;color:#888;margin-top:2px}
-.pipeline-section{padding:1.5rem 2rem;max-width:860px;margin:0 auto}
+.section{padding:1.5rem 2rem;max-width:1100px;margin:0 auto}
 .section-label{font-size:11px;font-weight:600;color:#999;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
 .section-title{font-size:1.2rem;font-weight:600;margin-bottom:.3rem}
 .section-sub{font-size:13px;color:#666;margin-bottom:1.2rem}
-.pipe-wrapper{background:#f8f8f8;border-radius:12px;padding:1.25rem;overflow:hidden}
-.pipe-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll 8s linear infinite}
+.pipe-wrapper{background:#f8f8f8;border-radius:12px;padding:1.1rem 1.25rem;overflow:hidden}
+.pipe-track{display:flex;align-items:center;gap:0;width:max-content;animation:scroll 10s linear infinite}
 .pipe-track:hover{animation-play-state:paused}
-.pipe-item{display:flex;align-items:center;gap:6px;white-space:nowrap}
-.pipe-label{font-size:13px;font-weight:500;padding:7px 14px;border-radius:8px;background:#fff;border:1px solid #e8e8e8;white-space:nowrap;transition:all 0.3s}
+.pipe-item{display:flex;align-items:center;gap:0;white-space:nowrap}
+.pipe-label{font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;background:#fff;border:1px solid #e8e8e8;white-space:nowrap;transition:all 0.3s;margin:0 4px}
 .pipe-label.active{border-color:#1a56db;color:#1a56db;background:#e8f0fe}
-.pipe-arrow{color:#bbb;font-size:16px;margin:0 4px}
+.pipe-arrow{color:#bbb;font-size:18px;font-weight:300;margin:0 2px}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.features-section{padding:1.5rem 2rem 2rem;max-width:860px;margin:0 auto}
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .flip-card{height:180px;cursor:pointer;perspective:1000px}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform 0.55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
@@ -71,7 +71,6 @@ a.btn-primary:hover{background:#333}
 .flip-back h4{font-size:13px;font-weight:600;margin-bottom:6px;color:#fff}
 .flip-back p{font-size:11.5px;color:#ccc;line-height:1.55}
 .flip-back .tag-mini{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;background:#333;color:#aaa;margin-top:8px;margin-right:3px}
-.endpoints-section{padding:1rem 2rem 2rem;max-width:860px;margin:0 auto}
 .ep-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ep{background:#f8f8f8;border-radius:8px;padding:10px 12px;display:flex;align-items:flex-start;gap:10px;text-decoration:none;border:1px solid transparent;transition:all 0.2s}
 .ep:hover{background:#fff;border-color:#e0e0e0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -80,8 +79,8 @@ a.btn-primary:hover{background:#333}
 .method.get{background:#e8f0fe;color:#1a56db}
 .ep-path{font-size:12px;font-weight:600;font-family:monospace;margin-bottom:2px;color:#1a1a1a}
 .ep-desc{font-size:11px;color:#888}
-hr{border:none;border-top:1px solid #f0f0f0;margin:0 2rem}
-.footer{padding:1.25rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;max-width:860px;margin:0 auto}
+hr{border:none;border-top:1px solid #f0f0f0}
+.footer{padding:1.25rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;max-width:1100px;margin:0 auto}
 .footer-links{display:flex;gap:16px}
 .footer a{font-size:13px;color:#888;text-decoration:none}
 .footer a:hover{color:#1a1a1a}
@@ -92,7 +91,7 @@ hr{border:none;border-top:1px solid #f0f0f0;margin:0 2rem}
 <div class="hero">
   <div class="rotating-tags" id="tagRow"></div>
   <h1 class="hero-title">&#128269; Fraud AI Investigator</h1>
-  <p class="hero-desc">An agentic AI system that investigates payment fraud end-to-end &#8212; from the first rule firing to the analyst&#8217;s final verdict &#8212; built for fintech AML, KYC compliance, on-chain crypto screening, and sanctions monitoring in the UAE and MENA region.</p>
+  <p class="hero-desc">Agentic AI fraud investigation for UAE/MENA fintech &mdash; LangGraph multi-agent pipeline with OFAC sanctions screening, on-chain crypto monitoring, KYC compliance, and HITL governance.</p>
   <div class="btn-row">
     <a href="/docs" class="btn btn-primary">&#128196; Live API Docs</a>
     <a href="https://github.com/ahmeraza/fraud-ai-investigator" class="btn">&#128279; GitHub</a>
@@ -109,10 +108,10 @@ hr{border:none;border-top:1px solid #f0f0f0;margin:0 2rem}
 
 <hr>
 
-<div class="pipeline-section">
+<div class="section">
   <p class="section-label">How it works</p>
   <p class="section-title">Investigation pipeline</p>
-  <p class="section-sub">Each stage feeds into the next automatically &#8212; hover to pause.</p>
+  <p class="section-sub">Each stage feeds into the next automatically &mdash; hover to pause.</p>
   <div class="pipe-wrapper">
     <div class="pipe-track" id="pipeTrack"></div>
   </div>
@@ -120,7 +119,7 @@ hr{border:none;border-top:1px solid #f0f0f0;margin:0 2rem}
 
 <hr>
 
-<div class="features-section">
+<div class="section">
   <p class="section-label">Capabilities</p>
   <p class="section-title">Six modules, one pipeline</p>
   <p class="section-sub">Click any card to see what it does.</p>
@@ -129,7 +128,7 @@ hr{border:none;border-top:1px solid #f0f0f0;margin:0 2rem}
 
 <hr>
 
-<div class="endpoints-section">
+<div class="section">
   <p class="section-label">API reference</p>
   <p class="section-title">Key endpoints</p>
   <p class="section-sub">Click any endpoint to open the interactive docs. Full reference at <a href="/docs" style="color:#1a56db">/docs</a></p>
@@ -165,7 +164,7 @@ function showNextTags(){
     const t=tags[(ti+i)%tags.length];
     const el=document.createElement('span');
     el.className='tag '+t.cls;
-    el.textContent=t.text;
+    el.innerHTML=t.text;
     el.style.animationDelay=(i*0.08)+'s';
     tagRow.appendChild(el);
   }
