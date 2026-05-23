@@ -154,7 +154,7 @@ const tags=[
   {text:"On-chain Crypto",cls:"green"},{text:"KYC Compliance",cls:"purple"},
   {text:"LangGraph Agents",cls:"red"},{text:"HITL Governance",cls:"blue"},
   {text:"OFAC SDN",cls:"amber"},{text:"UAE/MENA",cls:"green"},
-  {text:"269 Tests \u2713",cls:"blue"},{text:"FATF 2024",cls:"red"},
+  {text:"269 Tests &#10003;",cls:"blue"},{text:"FATF 2024",cls:"red"},
   {text:"$0/month",cls:"purple"},{text:"VARA Compliance",cls:"green"}
 ];
 const tagRow=document.getElementById('tagRow');
@@ -175,16 +175,16 @@ showNextTags();
 setInterval(showNextTags,2800);
 
 const pipeSteps=[
-  {label:"\uD83D\uDD14 Alert engine",cls:"active"},
-  {label:"\uD83E\uDDE0 LLM triage",cls:""},
-  {label:"\u26A1 5 parallel agents",cls:""},
-  {label:"\uD83D\uDC64 HITL review",cls:""},
-  {label:"\uD83D\uDCCA Fraud memory",cls:""}
+  {label:"&#128276; Alert engine",cls:"active"},
+  {label:"&#129504; LLM triage",cls:""},
+  {label:"&#9889; 5 parallel agents",cls:""},
+  {label:"&#128100; HITL review",cls:""},
+  {label:"&#128202; Fraud memory",cls:""}
 ];
 function buildPipe(){
   const track=document.getElementById('pipeTrack');
   const chunk=()=>pipeSteps.map((s,i)=>
-    '<span class="pipe-item"><span class="pipe-label '+s.cls+'">'+s.label+'</span>'+(i<pipeSteps.length-1?'<span class="pipe-arrow">\u2192</span>':'')+'</span>'
+    '<span class="pipe-item"><span class="pipe-label '+s.cls+'">'+s.label+'</span>'+(i<pipeSteps.length-1?'<span class="pipe-arrow">&#8594;</span>':'')+'</span>'
   ).join('');
   track.innerHTML=chunk()+chunk();
 }
@@ -198,22 +198,22 @@ setInterval(()=>{
 },1200);
 
 const features=[
-  {emoji:"\uD83D\uDD14",title:"Alert engine",hint:"Click to learn more",
-   back:"Five deterministic rules fire instantly \u2014 high value (AED 40k CBUAE threshold), FATF corridor (20 jurisdictions), device mismatch, new account pattern, OFAC name match.",
+  {emoji:"&#128276;",title:"Alert engine",hint:"Click to learn more",
+   back:"Five deterministic rules fire instantly &mdash; high value (AED 40k CBUAE threshold), FATF corridor (20 jurisdictions), device mismatch, new account pattern, OFAC name match.",
    tags:["AML","FATF","OFAC"]},
-  {emoji:"\uD83E\uDDE0",title:"LLM triage",hint:"Click to learn more",
-   back:"Gemini 2.5 Flash scores each alert 0\u2013100 with a UAE regulatory narrative. Auto-falls back to Groq Llama 3 on rate limits. Structured JSON output validated by Pydantic.",
+  {emoji:"&#129504;",title:"LLM triage",hint:"Click to learn more",
+   back:"Gemini 2.5 Flash scores each alert 0&ndash;100 with a UAE regulatory narrative. Auto-falls back to Groq Llama 3 on rate limits. Structured JSON output validated by Pydantic.",
    tags:["Gemini","Groq","LLM"]},
-  {emoji:"\uD83D\uDEE1",title:"Sanctions screening",hint:"Click to learn more",
-   back:"Real OFAC SDN list \u2014 12,000 entities. Arabic fuzzy matching handles Mohammed/Muhammad/Mohammad variants. Covers FATF 2024 grey and black list countries.",
+  {emoji:"&#128737;",title:"Sanctions screening",hint:"Click to learn more",
+   back:"Real OFAC SDN list &mdash; 12,000 entities. Arabic fuzzy matching handles Mohammed/Muhammad/Mohammad variants. Covers FATF 2024 grey and black list countries.",
    tags:["OFAC SDN","KYC","Fuzzy match"]},
-  {emoji:"\u20BF",title:"Crypto monitoring",hint:"Click to learn more",
-   back:"Etherscan V2 on-chain screening. Detects Tornado Cash, Blender, Sinbad interactions. Behavioural mixer patterns \u2014 round amounts, rapid in/out. VARA Travel Rule compliance.",
+  {emoji:"&#8383;",title:"Crypto monitoring",hint:"Click to learn more",
+   back:"Etherscan V2 on-chain screening. Detects Tornado Cash, Blender, Sinbad interactions. Behavioural mixer patterns &mdash; round amounts, rapid in/out. VARA Travel Rule compliance.",
    tags:["On-chain","VARA","Mixer"]},
-  {emoji:"\u26A1",title:"LangGraph agents",hint:"Click to learn more",
-   back:"Five specialist agents run in parallel \u2014 transaction, KYC, sanctions, crypto, synthesis. MemorySaver checkpointing enables HITL interrupts and graph replay.",
+  {emoji:"&#9889;",title:"LangGraph agents",hint:"Click to learn more",
+   back:"Five specialist agents run in parallel &mdash; transaction, KYC, sanctions, crypto, synthesis. MemorySaver checkpointing enables HITL interrupts and graph replay.",
    tags:["LangGraph","Parallel","Agents"]},
-  {emoji:"\uD83D\uDC64",title:"HITL governance",hint:"Click to learn more",
+  {emoji:"&#128100;",title:"HITL governance",hint:"Click to learn more",
    back:"Analyst queue with investigation summary, similar past cases, and regulatory guidance. CONFIRMED_FRAUD auto-flags STR obligation per CBUAE AML/CFT within 2 working days.",
    tags:["HITL","STR","Audit"]}
 ];
