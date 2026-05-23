@@ -100,10 +100,10 @@ hr{border:none;border-top:1px solid #f0f0f0}
 </div>
 
 <div class="stats">
-  <div class="stat"><div class="stat-num">5</div><div class="stat-label">fraud rules</div></div>
+  <div class="stat-num">17</div><div class="stat-label">compliance rules</div>
   <div class="stat"><div class="stat-num">12k</div><div class="stat-label">OFAC entities</div></div>
   <div class="stat"><div class="stat-num">590k</div><div class="stat-label">real transactions</div></div>
-  <div class="stat"><div class="stat-num">269</div><div class="stat-label">tests passing</div></div>
+  <div class="stat"><div class="stat-num">298</div><div class="stat-label">tests passing</div></div>
 </div>
 
 <hr>
