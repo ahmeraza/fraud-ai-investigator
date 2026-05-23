@@ -31,8 +31,8 @@ class Settings(BaseSettings):
     # ── LLM keys ─────────────────────────────────────────────────────────────
     gemini_api_key: str = Field(default="")
     groq_api_key  : str = Field(default="")
-    gemini_model  : str = Field(default="gemini-2.5-flash-preview-05-20")
-    groq_model    : str = Field(default="llama3-70b-8192")
+    gemini_model: str = Field(default="gemini-2.0-flash")
+    groq_model  : str = Field(default="llama-3.3-70b-versatile")
 
     # ── Crypto monitoring ─────────────────────────────────────────────────────
     etherscan_api_key           : str   = Field(default="", description="Etherscan V2 API key — free at etherscan.io/myapikey")

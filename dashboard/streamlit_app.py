@@ -266,7 +266,7 @@ def page_alerts():
                      "risk_score", "risk_band", "created_at"]
                     if c in df.columns]
 
-    styled = df[display_cols].style.applymap(colour_status, subset=["status"])
+    styled = df[display_cols].style.map(colour_status, subset=["status"])
     st.dataframe(styled, use_container_width=True, hide_index=True)
 
 
