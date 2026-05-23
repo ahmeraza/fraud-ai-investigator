@@ -20,7 +20,7 @@ short_description: Agentic AI fraud investigation for UAE/MENA fintech
 [![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-red)](https://streamlit.io)
 [![Docker](https://img.shields.io/badge/Docker-containerised-blue)](https://docker.com)
 [![Tests](https://img.shields.io/badge/tests-269_passing-brightgreen)](https://github.com/ahmeraza/fraud-ai-investigator)
-[![Live](https://img.shields.io/badge/Live_Demo-HuggingFace-yellow)](https://ahmeraza-fraud-ai-investigator.hf.space/docs)
+[![Live](https://img.shields.io/badge/Live_Demo-HuggingFace-yellow)](https://ahmeraza-fraud-ai-investigator.hf.space)
 
 ---
 
@@ -46,7 +46,8 @@ Built with UAE/MENA AML compliance expertise — the rules, thresholds, regulato
 
 ## Live Demo
 
-**API (live):** https://ahmeraza-fraud-ai-investigator.hf.space/docs
+**Live Demo:** https://ahmeraza-fraud-ai-investigator.hf.space
+**API Docs:** https://ahmeraza-fraud-ai-investigator.hf.space/docs
 
 **Full pipeline — 60 seconds to run:**
 ```
@@ -157,6 +158,7 @@ Transaction
 | Deployment | Hugging Face Spaces | Free, public, Docker-native |
 | Package manager | uv | 10–100x faster than pip |
 | Testing | pytest + pytest-cov | 269 tests, all mocked, zero API cost |
+| Landing page | Interactive HTML — rotating tags, animated pipeline, flip cards |
 
 ---
 
@@ -362,4 +364,4 @@ MIT — see [LICENSE](LICENSE)
 
 ---
 
-*[GitHub](https://github.com/ahmeraza/fraud-ai-investigator) · [Live Demo](https://ahmeraza-fraud-ai-investigator.hf.space/docs)*
+*[GitHub](https://github.com/ahmeraza/fraud-ai-investigator) · [Live Demo](https://ahmeraza-fraud-ai-investigator.hf.space)*

@@ -432,6 +432,14 @@ mock_llm.complete.return_value = LLMResponse(
 )
 ```
 
+### 9.6 HTML landing page as a module-level constant
+
+The landing page HTML is stored as `LANDING_HTML` at module level in `main.py`, not inside the route function. Two reasons: the string is parsed once at import time rather than on every request; and it keeps the route function to a single readable line. For strings this large, embedding them in the function body creates noise around the function signature.
+
+The page itself encodes a production consideration: the Hugging Face Space URL is the first thing a recruiter or engineer sees. A raw JSON response (`{"service": "Fraud AI Investigator"}`) communicates nothing. An interactive page with rotating fintech keywords, an animated investigation pipeline, flip cards showing each module, and clickable endpoint links communicates the scope of the system in under 10 seconds without requiring the visitor to read documentation.
+
+This is the same reason production APIs at Stripe and Twilio have polished developer landing pages — the landing page is part of the product, not an afterthought.
+
 ---
 
 ## 10. UAE/MENA Regulatory Context
