@@ -58,7 +58,7 @@ a.btn-primary:hover{background:#333}
 .pipe-label.active{border-color:#1a56db;color:#1a56db;background:#e8f0fe}
 .pipe-arrow{color:#bbb;font-size:18px;font-weight:300;margin:0 2px}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .flip-card{height:180px;cursor:pointer;perspective:1000px}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform 0.55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
@@ -91,7 +91,8 @@ hr{border:none;border-top:1px solid #f0f0f0}
 <div class="hero">
   <div class="rotating-tags" id="tagRow"></div>
   <h1 class="hero-title">&#128269; Fraud AI Investigator</h1>
-  <p class="hero-desc">Agentic AI fraud investigation for UAE/MENA fintech &mdash; LangGraph multi-agent pipeline with OFAC sanctions screening, on-chain crypto monitoring, KYC compliance, and HITL governance.</p>
+  <p class="hero-desc">Agentic AI fraud investigation for UAE/MENA fintech &mdash; 17 compliance rules covering CBUAE AML/CFT, FATF Travel Rule, VARA virtual assets, OFAC sanctions, on-chain crypto monitoring, and HITL governance.
+</p>
   <div class="btn-row">
     <a href="/docs" class="btn btn-primary">&#128196; Live API Docs</a>
     <a href="https://github.com/ahmeraza/fraud-ai-investigator" class="btn">&#128279; GitHub</a>
@@ -214,7 +215,10 @@ const features=[
    tags:["LangGraph","Parallel","Agents"]},
   {emoji:"&#128100;",title:"HITL governance",hint:"Click to learn more",
    back:"Analyst queue with investigation summary, similar past cases, and regulatory guidance. CONFIRMED_FRAUD auto-flags STR obligation per CBUAE AML/CFT within 2 working days.",
-   tags:["HITL","STR","Audit"]}
+   tags:["HITL","STR","Audit"]},
+   {emoji:"&#9878;",title:"Compliance engine",hint:"Click to learn more",
+   back:"17 rules across CBUAE AML/CFT, FATF Recommendations 10/12/16, and VARA 2023. Structuring detection, PEP screening, Travel Rule, unhosted wallet EDD, DeFi monitoring, stablecoin cycling. Every rule cites its exact regulatory article.",
+   tags:["VARA 2023","FATF R.16","CBUAE"]}
 ];
 const grid=document.getElementById('cardsGrid');
 features.forEach(f=>{
