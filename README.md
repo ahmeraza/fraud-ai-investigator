@@ -177,6 +177,44 @@ Transaction
 
 ---
 
+## Compliance Engine — 17 Rules
+
+The compliance engine extends the base 5 alert rules with 12 additional rules grounded in real UAE/MENA regulatory documents.
+
+### Payment AML Rules (6–11) — CBUAE/FATF
+
+| Rule | What it detects | Regulatory basis |
+|---|---|---|
+| Rule 6 | Structuring/smurfing — transactions just below AED 40k threshold | CBUAE AML/CFT §4.1; UAE Law 20/2014 Art.2(1)d |
+| Rule 7 | Velocity — 5+ transactions within 1 hour | FATF Recommendation 10 |
+| Rule 8 | Cross-border wire above AED 100k second threshold | CBUAE AML/CFT §5.3 |
+| Rule 9 | PEP transaction — Politically Exposed Person | FATF Recommendation 12 |
+| Rule 10 | Dormant account (6+ months) sudden large activity | CBUAE AML/CFT §3.4 |
+| Rule 11 | High-risk merchant MCC (gambling, forex, crypto exchanges) | CBUAE Merchant Risk 2023 |
+
+### VARA Virtual Asset Rules (12–17) — VARA 2023/FATF
+
+| Rule | What it detects | Regulatory basis |
+|---|---|---|
+| Rule 12 | FATF Travel Rule — missing originator/beneficiary above AED 3,674 | FATF R.16; VARA CRMR §4.2 |
+| Rule 13 | Unhosted/non-custodial wallet enhanced due diligence | VARA CRMR §5.1 |
+| Rule 14 | High-risk VASP jurisdiction (FATF non-compliant countries) | VARA CRMR §6.3 |
+| Rule 15 | DeFi protocol interaction (DEX, MIXER, BRIDGE, LENDING) | VARA VAR 2023 §8.2 |
+| Rule 16 | NFT high-value transaction above AED 36,740 | FATF VA Guidance 2021 |
+| Rule 17 | Stablecoin rapid cycling — USDT/USDC in→out within 5 minutes | VARA Travel Rule 2023 |
+
+### Compliance API endpoints
+
+```
+GET  /v1/compliance/rules           — all 17 rules with regulatory citations
+POST /v1/compliance/check/payment   — run payment AML rules 6–11
+POST /v1/compliance/check/vara      — run VARA virtual asset rules 12–17
+GET  /v1/compliance/travel-rule     — FATF Travel Rule threshold (AED 3,674)
+GET  /v1/compliance/vara/status     — VARA framework configuration
+GET  /v1/compliance/payment/config  — payment AML thresholds
+
+```
+
 ## Quickstart
 
 ### 1 — Clone the repo
@@ -330,6 +368,7 @@ fraud-ai-investigator/
 | Phase 5 | HITL review, fraud memory, enhanced audit trail | ✅ Complete |
 | Phase 6 | Streamlit dashboard + Docker packaging | ✅ Complete |
 | Phase 7 | Deploy to Hugging Face Spaces (live demo) | ✅ Complete |
+| Compliance | 17-rule compliance engine — VARA, FATF Travel Rule, CBUAE extended AML | ✅ Complete |
 
 ---
 
@@ -350,6 +389,7 @@ fraud-ai-investigator/
 | `test_crypto.py` | Mixer detection, Etherscan mocked, API | Unit + Integration |
 | `test_investigation.py` | LangGraph graph, all 5 agents, MemorySaver | Unit + Integration |
 | `test_hitl.py` | Fraud memory, verdict transitions, STR flag | Unit + Integration |
+| `test_compliance.py` | 54 tests — all 17 rules, both frameworks, all API endpoints | Unit + Integration |
 
 All LLM calls mocked with real `LLMResponse` objects (MemorySaver requires msgpack-serialisable state — MagicMock fails serialisation).
 
